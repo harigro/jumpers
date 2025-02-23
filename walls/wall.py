@@ -6,6 +6,26 @@ class Object:
         self._osize = size
 
     @property
+    def get_ox(self) -> tuple[int, int]:
+        """Mengambil nilai ox saat ini"""
+        return self._ox
+    
+    @get_ox.setter
+    def set_size(self, new_ox: tuple[int, int]):
+        """Mengedit nilai ox saat ini"""
+        self._ox = new_ox
+
+    @property
+    def get_oy(self) -> tuple[int, int]:
+        """Mengambil nilai oy saat ini"""
+        return self._oy
+    
+    @get_oy.setter
+    def set_size(self, new_oy: tuple[int, int]):
+        """Mengedit nilai oy saat ini"""
+        self._oy = new_oy
+
+    @property
     def get_size(self) -> tuple[int, int]:
         """Mengambil nilai size saat ini"""
         return self._osize
