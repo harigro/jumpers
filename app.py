@@ -98,9 +98,11 @@ def main():
     # Buat objek kotak
     box = Box(x=BOX_SIZE, y=FLOOR_Y, size=(BOX_SIZE, BOX_SIZE))
     # tembok penghalang
-    tembok = BoxWall(x=(WIDTH//2), y=FLOOR_Y, size=(BOX_SIZE, BOX_SIZE))
-    tembok_rintangan = BoxWall(x=WIDTH, y=FLOOR_Y-BOX_SIZE, size=(BOX_SIZE, BOX_SIZE))
     data_rintangan = dict(zip([100, 150, 200, 250], [50, 100, 150, 200])) # data tinggi dan posisi rintangan
+    acak_awal = choice(list(data_rintangan.keys()))
+    tembok = BoxWall(x=(WIDTH//2), y=FLOOR_Y, size=(BOX_SIZE, BOX_SIZE))
+    tembok_rintangan = BoxWall(x=WIDTH, y=FLOOR_Y-BOX_SIZE-(data_rintangan[acak_awal]), size=(BOX_SIZE, acak_awal))
+    
 
     # Loop utama
     running = True
