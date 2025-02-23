@@ -1,5 +1,6 @@
 from typing import Union
 from walls.wall import Object
+from random import choice
 import pygame
 
 # Inisialisasi Pygame
@@ -96,14 +97,10 @@ def main():
         
     # Buat objek kotak
     box = Box(x=BOX_SIZE, y=FLOOR_Y, size=(BOX_SIZE, BOX_SIZE))
+    # tembok penghalang
     tembok = BoxWall(x=(WIDTH//2), y=FLOOR_Y, size=(BOX_SIZE, BOX_SIZE))
     tembok_rintangan = BoxWall(x=WIDTH, y=FLOOR_Y-BOX_SIZE, size=(BOX_SIZE, BOX_SIZE))
-    xx = tembok_rintangan.get_ox
-    yy = tembok_rintangan.get_oy
-    zz = tembok_rintangan.get_size
-    tembok_rintangan.set_size = BOX_SIZE, 100
-    tembok_rintangan.set_oy = FLOOR_Y-BOX_SIZE-50
-    print(f"Posisi x: {xx}, y: {yy}, z: {zz}")
+    data_rintangan = dict(zip([100, 150, 200, 250], [50, 100, 150, 200])) # data tinggi dan posisi rintangan
 
     # Loop utama
     running = True
@@ -127,7 +124,13 @@ def main():
 
         # Gerakkan dinding ke kiri
         tembok.move_left(1, BOX_SIZE)
-        tembok_rintangan.move_left(2, (WIDTH+BOX_SIZE))
+        tembok_rintangan.move_left(4, (WIDTH+BOX_SIZE))
+
+        if tembok_rintangan.jalan == 0:
+            tinggi_rintangan = choice(list(data_rintangan.keys()))
+            tembok_rintangan.set_size = BOX_SIZE, tinggi_rintangan
+            if tembok_rintangan.get_size == (BOX_SIZE, tinggi_rintangan):
+                tembok_rintangan.set_oy = FLOOR_Y-BOX_SIZE-data_rintangan[tinggi_rintangan]
 
         # Gambar ulang layar
         screen.fill(BACKGROUND_COLOR)
