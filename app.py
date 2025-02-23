@@ -27,7 +27,7 @@ class Box:
 
     def __init__(self, x: int, y: int, size: tuple[int, int]):
         """Inisialisasi kotak dengan posisi, ukuran, dan atribut lainnya."""
-        self.rect = pygame.Rect(x, y, size, size)
+        self.rect = pygame.Rect(x, y, size[0], size[1])
         self.velocity_y = 0
         self.on_ground = True
 
@@ -78,27 +78,27 @@ class BoxWall:
     def draws_split(self, surface: pygame.display, color: tuple[int, int, int], split: int):
         """Menggambar beberapa kotak pembatas di layar dan mengulang setelah keluar."""
         for i in range(0, WIDTH + BOX_SIZE, BOX_SIZE):
-            pygame.draw.rect(surface, color, pygame.Rect(i + self.jalan, self.__y, self.__size - split, self.__size))
+            pygame.draw.rect(surface, color, pygame.Rect(i + self.jalan, self.__y, self.__size[0] - split, self.__size[1]))
 
     def draw_split(self, surface: pygame.display, color: tuple[int, int, int], split: int):
         """Menggambar satu kotak pembatas di layar dan mengulang setelah keluar."""
-        pygame.draw.rect(surface, color, pygame.Rect(self.__x + self.jalan, self.__y, self.__size - split, self.__size))
+        pygame.draw.rect(surface, color, pygame.Rect(self.__x + self.jalan, self.__y, self.__size[0] - split, self.__size[1]))
 
     def draws(self, surface: pygame.display, color: tuple[int, int, int]):
         """Menggambar beberapa kotak di layar."""
         for i in range(0, WIDTH, BOX_SIZE):
-            pygame.draw.rect(surface, color, pygame.Rect(i, self.__y, self.__size, self.__size))        
+            pygame.draw.rect(surface, color, pygame.Rect(i, self.__y, self.__size[0], self.__size[1]))        
 
     def draw(self, surface: pygame.display, color: tuple[int, int, int]):
         """Menggambar kotak di layar."""
-        pygame.draw.rect(surface, color, pygame.Rect(self.__x, self.__y, self.__size, self.__size))
+        pygame.draw.rect(surface, color, pygame.Rect(self.__x, self.__y, self.__size[0], self.__size[1]))
 
 def main():
         
     # Buat objek kotak
-    box = Box(BOX_SIZE, FLOOR_Y, BOX_SIZE)
-    tembok = BoxWall((WIDTH//2), FLOOR_Y, BOX_SIZE)
-    tembok_rintangan = BoxWall(WIDTH, FLOOR_Y-BOX_SIZE, BOX_SIZE)
+    box = Box(x=BOX_SIZE, y=FLOOR_Y, size=(BOX_SIZE, BOX_SIZE))
+    tembok = BoxWall(x=(WIDTH//2), y=FLOOR_Y, size=(BOX_SIZE, BOX_SIZE))
+    tembok_rintangan = BoxWall(x=WIDTH, y=FLOOR_Y-BOX_SIZE, size=(BOX_SIZE, BOX_SIZE))
 
     # Loop utama
     running = True
