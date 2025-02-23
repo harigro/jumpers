@@ -69,6 +69,16 @@ class BoxWall:
         self.__y = y
         self.__size = size
 
+    @property
+    def get_size(self) -> tuple[int, int]:
+        """Mengambil nilai size saat ini"""
+        return self.__size
+    
+    @get_size.setter
+    def set_size(self, new_size: tuple[int, int]):
+        """Mengedit nilai size saat ini"""
+        self.__size = new_size
+
     def move_left(self, velocity: int, batas):
         """Menggerakkan kotak pembatas ke kiri dan mengulang ke kanan jika keluar dari layar."""
         self.jalan -= velocity
@@ -99,6 +109,10 @@ def main():
     box = Box(x=BOX_SIZE, y=FLOOR_Y, size=(BOX_SIZE, BOX_SIZE))
     tembok = BoxWall(x=(WIDTH//2), y=FLOOR_Y, size=(BOX_SIZE, BOX_SIZE))
     tembok_rintangan = BoxWall(x=WIDTH, y=FLOOR_Y-BOX_SIZE, size=(BOX_SIZE, BOX_SIZE))
+    # atur size
+    ss = tembok_rintangan.get_size
+    tembok_rintangan.set_size = (ss[0], 100)
+    print(tembok_rintangan.get_size)
 
     # Loop utama
     running = True
