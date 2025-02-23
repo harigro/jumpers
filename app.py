@@ -1,4 +1,5 @@
 from typing import Union
+from walls.wall import Object
 import pygame
 
 # Inisialisasi Pygame
@@ -59,25 +60,13 @@ class Box:
         """Menggambar kotak di layar."""
         pygame.draw.rect(surface, BOX_COLOR, self.rect)
 
-class BoxWall:
+class BoxWall(Object):
 
     jalan = 0
     
     def __init__(self, x: int, y: int, size: tuple[int, int]):
         """Inisialisasi kotak dengan posisi, ukuran, dan atribut lainnya."""
-        self.__x = x
-        self.__y = y
-        self.__size = size
-
-    @property
-    def get_size(self) -> tuple[int, int]:
-        """Mengambil nilai size saat ini"""
-        return self.__size
-    
-    @get_size.setter
-    def set_size(self, new_size: tuple[int, int]):
-        """Mengedit nilai size saat ini"""
-        self.__size = new_size
+        super().__init__(x=x, y=y, size=size)
 
     def move_left(self, velocity: int, batas):
         """Menggerakkan kotak pembatas ke kiri dan mengulang ke kanan jika keluar dari layar."""
@@ -88,20 +77,20 @@ class BoxWall:
     def draws_split(self, surface: pygame.display, color: tuple[int, int, int], split: int):
         """Menggambar beberapa kotak pembatas di layar dan mengulang setelah keluar."""
         for i in range(0, WIDTH + BOX_SIZE, BOX_SIZE):
-            pygame.draw.rect(surface, color, pygame.Rect(i + self.jalan, self.__y, self.__size[0] - split, self.__size[1]))
+            pygame.draw.rect(surface, color, pygame.Rect(i + self.jalan, self._oy, self._osize[0] - split, self._osize[1]))
 
     def draw_split(self, surface: pygame.display, color: tuple[int, int, int], split: int):
         """Menggambar satu kotak pembatas di layar dan mengulang setelah keluar."""
-        pygame.draw.rect(surface, color, pygame.Rect(self.__x + self.jalan, self.__y, self.__size[0] - split, self.__size[1]))
+        pygame.draw.rect(surface, color, pygame.Rect(self._ox + self.jalan, self._oy, self._osize[0] - split, self._osize[1]))
 
     def draws(self, surface: pygame.display, color: tuple[int, int, int]):
         """Menggambar beberapa kotak di layar."""
         for i in range(0, WIDTH, BOX_SIZE):
-            pygame.draw.rect(surface, color, pygame.Rect(i, self.__y, self.__size[0], self.__size[1]))        
+            pygame.draw.rect(surface, color, pygame.Rect(i, self._oy, self._osize[0], self._osize[1]))        
 
     def draw(self, surface: pygame.display, color: tuple[int, int, int]):
         """Menggambar kotak di layar."""
-        pygame.draw.rect(surface, color, pygame.Rect(self.__x, self.__y, self.__size[0], self.__size[1]))
+        pygame.draw.rect(surface, color, pygame.Rect(self._ox, self._oy, self._osize[0], self._osize[1]))
 
 def main():
         
