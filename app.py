@@ -68,7 +68,7 @@ class BoxWall(Object):
         """Inisialisasi kotak dengan posisi, ukuran, dan atribut lainnya."""
         super().__init__(x=x, y=y, size=size)
 
-    def move_left(self, velocity: int, batas):
+    def move_left(self, velocity: int, batas: int):
         """Menggerakkan kotak pembatas ke kiri dan mengulang ke kanan jika keluar dari layar."""
         self.jalan -= velocity
         if self.jalan <= -batas:  # Reset posisi setelah keluar dari layar
