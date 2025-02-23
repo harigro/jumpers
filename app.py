@@ -98,6 +98,12 @@ def main():
     box = Box(x=BOX_SIZE, y=FLOOR_Y, size=(BOX_SIZE, BOX_SIZE))
     tembok = BoxWall(x=(WIDTH//2), y=FLOOR_Y, size=(BOX_SIZE, BOX_SIZE))
     tembok_rintangan = BoxWall(x=WIDTH, y=FLOOR_Y-BOX_SIZE, size=(BOX_SIZE, BOX_SIZE))
+    xx = tembok_rintangan.get_ox
+    yy = tembok_rintangan.get_oy
+    zz = tembok_rintangan.get_size
+    tembok_rintangan.set_size = BOX_SIZE, 100
+    tembok_rintangan.set_oy = FLOOR_Y-BOX_SIZE-50
+    print(f"Posisi x: {xx}, y: {yy}, z: {zz}")
 
     # Loop utama
     running = True
