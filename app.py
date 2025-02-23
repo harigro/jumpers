@@ -98,10 +98,6 @@ def main():
     box = Box(x=BOX_SIZE, y=FLOOR_Y, size=(BOX_SIZE, BOX_SIZE))
     tembok = BoxWall(x=(WIDTH//2), y=FLOOR_Y, size=(BOX_SIZE, BOX_SIZE))
     tembok_rintangan = BoxWall(x=WIDTH, y=FLOOR_Y-BOX_SIZE, size=(BOX_SIZE, BOX_SIZE))
-    # atur size
-    ss = tembok_rintangan.get_size
-    tembok_rintangan.set_size = (ss[0], 100)
-    print(tembok_rintangan.get_size)
 
     # Loop utama
     running = True
