@@ -139,7 +139,7 @@ def main():
         box.draw(surface=screen)
         tembok.draws(surface=screen, color=(150, 255, 160))
         tembok.draws_split(surface=screen, color=(158, 105, 108), split=5)
-        tembok_rintangan.draw_split(surface=screen, color=(158, 105, 108), split=5)
+        tembok_rintangan.draw_split(surface=screen, color=(31, 171, 204), split=5)
 
         # atur fps
         clock.tick(FPS)
