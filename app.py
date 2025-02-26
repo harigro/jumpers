@@ -7,8 +7,11 @@ import pygame
 # Inisialisasi Pygame
 pygame.init()
 
+# Buat layar game penuh
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 # Konstanta layar
-WIDTH, HEIGHT = 700, 500
+info = pygame.display.Info()
+WIDTH, HEIGHT = info.current_w, info.current_h
 BACKGROUND_COLOR = (30, 30, 30)
 
 # Warna dan ukuran kotak
@@ -19,10 +22,6 @@ FLOOR_Y = HEIGHT - BOX_SIZE  # Posisi lantai
 # FPS
 FPS = 60
 clock = pygame.time.Clock()
-
-# Buat layar game
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Jumpers")
 
 
 class Box:
@@ -112,6 +111,10 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            # keluar dari game dengan tombol ESC
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
 
         # Ambil input dari keyboard
         keys = pygame.key.get_pressed()
