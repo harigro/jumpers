@@ -57,9 +57,9 @@ class Box:
         elif direction == "right" and self.rect.right < WIDTH:
             self.rect.x += velocity
 
-    def draw(self, surface: pygame.display):
+    def draw(self, surface: pygame.display, color: tuple[int, int, int]):
         """Menggambar kotak di layar."""
-        pygame.draw.rect(surface, BOX_COLOR, self.rect)
+        pygame.draw.rect(surface, color, self.rect)
 
 class BoxWall(Object):
 
@@ -140,7 +140,7 @@ def main():
 
         # Gambar ulang layar
         screen.fill(BACKGROUND_COLOR)
-        box.draw(surface=screen)
+        box.draw(surface=screen, color=BOX_COLOR)
         tembok.draws(surface=screen, color=(150, 255, 160))
         tembok.draws_split(surface=screen, color=(158, 105, 108), split=5)
         tembok_rintangan.draw_split(surface=screen, color=(31, 171, 204), split=5)
