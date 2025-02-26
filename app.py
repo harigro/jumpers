@@ -95,7 +95,7 @@ def main():
     # tembok penghalang
     data_rintangan = DataWall((100, 50)).height_axis_y(200, 10) # data tinggi dan posisi rintangan
     acak_awal = choice(list(data_rintangan.keys()))
-    tembok = BoxWall(x=(WIDTH//2), y=FLOOR_Y, size=(SETTINGS.box_size, SETTINGS.box_size))
+    tembok_lantai = BoxWall(x=(WIDTH//2), y=FLOOR_Y, size=(SETTINGS.box_size, SETTINGS.box_size))
     tembok_rintangan = BoxWall(x=WIDTH, y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal]), size=(SETTINGS.box_size, acak_awal))
     
 
@@ -124,7 +124,7 @@ def main():
         box.apply_gravity(0.5)
 
         # Gerakkan dinding ke kiri
-        tembok.move_left(1, SETTINGS.box_size)
+        tembok_lantai.move_left(1, SETTINGS.box_size)
         tembok_rintangan.move_left(4, (WIDTH+SETTINGS.box_size))
 
         if tembok_rintangan.jalan == 0:
@@ -136,8 +136,8 @@ def main():
         # Gambar ulang layar
         screen.fill(COLORS.background_color)
         box.draw(surface=screen, color=COLORS.box_color)
-        tembok.draws(surface=screen, color=COLORS.boxs_color)
-        tembok.draws_split(surface=screen, color=COLORS.box_splits_color, split=5)
+        tembok_lantai.draws(surface=screen, color=COLORS.boxs_color)
+        tembok_lantai.draws_split(surface=screen, color=COLORS.box_splits_color, split=5)
         tembok_rintangan.draw_split(surface=screen, color=COLORS.box_split_color, split=5)
 
         # atur fps
