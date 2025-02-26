@@ -1,6 +1,7 @@
-from typing import Union
 from walls.wall import Object
 from walls.data_wall import DataWall
+from screen import SETTINGS, COLORS
+from typing import Union
 from random import choice
 import pygame
 
@@ -12,15 +13,9 @@ screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 # Konstanta layar
 info = pygame.display.Info()
 WIDTH, HEIGHT = info.current_w, info.current_h
-BACKGROUND_COLOR = (30, 30, 30)
-
 # Warna dan ukuran kotak
-BOX_COLOR = (0, 255, 0)
-BOX_SIZE = 50
-FLOOR_Y = HEIGHT - BOX_SIZE  # Posisi lantai
-
-# FPS
-FPS = 60
+FLOOR_Y = HEIGHT - SETTINGS.box_size  # Posisi lantai
+# atur FPS
 clock = pygame.time.Clock()
 
 
@@ -77,7 +72,7 @@ class BoxWall(Object):
 
     def draws_split(self, surface: pygame.display, color: tuple[int, int, int], split: int):
         """Menggambar beberapa kotak pembatas di layar dan mengulang setelah keluar."""
-        for i in range(0, WIDTH + BOX_SIZE, BOX_SIZE):
+        for i in range(0, WIDTH + SETTINGS.box_size, SETTINGS.box_size):
             pygame.draw.rect(surface, color, pygame.Rect(i + self.jalan, self._oy, self._osize[0] - split, self._osize[1]))
 
     def draw_split(self, surface: pygame.display, color: tuple[int, int, int], split: int):
@@ -86,7 +81,7 @@ class BoxWall(Object):
 
     def draws(self, surface: pygame.display, color: tuple[int, int, int]):
         """Menggambar beberapa kotak di layar."""
-        for i in range(0, WIDTH, BOX_SIZE):
+        for i in range(0, WIDTH, SETTINGS.box_size):
             pygame.draw.rect(surface, color, pygame.Rect(i, self._oy, self._osize[0], self._osize[1]))        
 
     def draw(self, surface: pygame.display, color: tuple[int, int, int]):
@@ -96,12 +91,12 @@ class BoxWall(Object):
 def main():
         
     # Buat objek kotak
-    box = Box(x=BOX_SIZE, y=FLOOR_Y, size=(BOX_SIZE, BOX_SIZE))
+    box = Box(x=SETTINGS.box_size, y=FLOOR_Y, size=(SETTINGS.box_size, SETTINGS.box_size))
     # tembok penghalang
     data_rintangan = DataWall((100, 50)).height_axis_y(200, 10) # data tinggi dan posisi rintangan
     acak_awal = choice(list(data_rintangan.keys()))
-    tembok = BoxWall(x=(WIDTH//2), y=FLOOR_Y, size=(BOX_SIZE, BOX_SIZE))
-    tembok_rintangan = BoxWall(x=WIDTH, y=FLOOR_Y-BOX_SIZE-(data_rintangan[acak_awal]), size=(BOX_SIZE, acak_awal))
+    tembok = BoxWall(x=(WIDTH//2), y=FLOOR_Y, size=(SETTINGS.box_size, SETTINGS.box_size))
+    tembok_rintangan = BoxWall(x=WIDTH, y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal]), size=(SETTINGS.box_size, acak_awal))
     
 
     # Loop utama
@@ -129,24 +124,24 @@ def main():
         box.apply_gravity(0.5)
 
         # Gerakkan dinding ke kiri
-        tembok.move_left(1, BOX_SIZE)
-        tembok_rintangan.move_left(4, (WIDTH+BOX_SIZE))
+        tembok.move_left(1, SETTINGS.box_size)
+        tembok_rintangan.move_left(4, (WIDTH+SETTINGS.box_size))
 
         if tembok_rintangan.jalan == 0:
             tinggi_rintangan = choice(list(data_rintangan.keys()))
-            tembok_rintangan.set_size = BOX_SIZE, tinggi_rintangan
-            if tembok_rintangan.get_size == (BOX_SIZE, tinggi_rintangan):
-                tembok_rintangan.set_oy = FLOOR_Y-BOX_SIZE-data_rintangan[tinggi_rintangan]
+            tembok_rintangan.set_size = SETTINGS.box_size, tinggi_rintangan
+            if tembok_rintangan.get_size == (SETTINGS.box_size, tinggi_rintangan):
+                tembok_rintangan.set_oy = FLOOR_Y-SETTINGS.box_size-data_rintangan[tinggi_rintangan]
 
         # Gambar ulang layar
-        screen.fill(BACKGROUND_COLOR)
-        box.draw(surface=screen, color=BOX_COLOR)
-        tembok.draws(surface=screen, color=(150, 255, 160))
-        tembok.draws_split(surface=screen, color=(158, 105, 108), split=5)
-        tembok_rintangan.draw_split(surface=screen, color=(31, 171, 204), split=5)
+        screen.fill(COLORS.background_color)
+        box.draw(surface=screen, color=COLORS.box_color)
+        tembok.draws(surface=screen, color=COLORS.boxs_color)
+        tembok.draws_split(surface=screen, color=COLORS.box_splits_color, split=5)
+        tembok_rintangan.draw_split(surface=screen, color=COLORS.box_split_color, split=5)
 
         # atur fps
-        clock.tick(FPS)
+        clock.tick(SETTINGS.fps)
         pygame.display.update()
 
     # Keluar dari game
