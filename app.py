@@ -96,9 +96,10 @@ def main():
     data_rintangan = DataWall((100, 50)).height_axis_y(200, 10) # data tinggi dan posisi rintangan
     acak_awal = choice(list(data_rintangan.keys()))
     tembok_lantai = BoxWall(x=(WIDTH//2), y=FLOOR_Y, size=(SETTINGS.box_size, SETTINGS.box_size))
-    tembok_rintangan = BoxWall(x=WIDTH, y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal]), size=(SETTINGS.box_size, acak_awal))
+    tembok_rintangan = (BoxWall(x=WIDTH, y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal]), size=(SETTINGS.box_size, acak_awal)),
+                        BoxWall(x=WIDTH, y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal]), size=(SETTINGS.box_size, acak_awal)),
+                        BoxWall(x=WIDTH, y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal]), size=(SETTINGS.box_size, acak_awal)))
     
-
     # Loop utama
     running = True
     while running:
@@ -125,20 +126,26 @@ def main():
 
         # Gerakkan dinding ke kiri
         tembok_lantai.move_left(1, SETTINGS.box_size)
-        tembok_rintangan.move_left(4, (WIDTH+SETTINGS.box_size))
+        tembok_rintangan[0].move_left(4, (WIDTH+SETTINGS.box_size))
+        tembok_rintangan[1].move_left(6, (WIDTH+SETTINGS.box_size))
+        tembok_rintangan[2].move_left(2, (WIDTH+SETTINGS.box_size))
+        # tinggi rintangana
+        tinggi_rintangan = choice(list(data_rintangan.keys()))
 
-        if tembok_rintangan.jalan == 0:
-            tinggi_rintangan = choice(list(data_rintangan.keys()))
-            tembok_rintangan.set_size = SETTINGS.box_size, tinggi_rintangan
-            if tembok_rintangan.get_size == (SETTINGS.box_size, tinggi_rintangan):
-                tembok_rintangan.set_oy = FLOOR_Y-SETTINGS.box_size-data_rintangan[tinggi_rintangan]
+        for r in tembok_rintangan:
+            if r.jalan == 0:
+                r.set_size = SETTINGS.box_size, tinggi_rintangan
+                if r.get_size == (SETTINGS.box_size, tinggi_rintangan):
+                    r.set_oy = FLOOR_Y-SETTINGS.box_size-data_rintangan[tinggi_rintangan]
 
         # Gambar ulang layar
         screen.fill(COLORS.background_color)
         box.draw(surface=screen, color=COLORS.box_color)
         tembok_lantai.draws(surface=screen, color=COLORS.boxs_color)
         tembok_lantai.draws_split(surface=screen, color=COLORS.box_splits_color, split=5)
-        tembok_rintangan.draw_split(surface=screen, color=COLORS.box_split_color, split=5)
+        tembok_rintangan[0].draw_split(surface=screen, color=COLORS.box_split_color, split=5)
+        tembok_rintangan[1].draw_split(surface=screen, color=COLORS.box_split_color, split=5)
+        tembok_rintangan[2].draw_split(surface=screen, color=COLORS.box_split_color, split=5)
 
         # atur fps
         clock.tick(SETTINGS.fps)
