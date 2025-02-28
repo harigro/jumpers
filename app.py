@@ -96,9 +96,11 @@ def main():
     data_rintangan = DataWall((100, 50)).height_axis_y(200, 10) # data tinggi dan posisi rintangan
     acak_awal = sample(list(data_rintangan.keys()), 3) # memastikan agar data yang diambil benar-benar tidak sama
     tembok_lantai = BoxWall(x=(WIDTH//2), y=FLOOR_Y, size=(SETTINGS.box_size, SETTINGS.box_size))
-    tembok_rintangan = (BoxWall(x=WIDTH, y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal[0]]), size=(SETTINGS.box_size, acak_awal[0])),
-                        BoxWall(x=WIDTH, y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal[1]]), size=(SETTINGS.box_size, acak_awal[1])),
-                        BoxWall(x=WIDTH, y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal[2]]), size=(SETTINGS.box_size, acak_awal[2])))
+    tembok_rintangan = (
+        BoxWall(x=WIDTH+(SETTINGS.box_size*2), y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal[0]]), size=(SETTINGS.box_size, acak_awal[0])),
+        BoxWall(x=WIDTH+(SETTINGS.box_size*2), y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal[1]]), size=(SETTINGS.box_size, acak_awal[1])),
+        BoxWall(x=WIDTH+(SETTINGS.box_size*2), y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal[2]]), size=(SETTINGS.box_size, acak_awal[2]))
+    )
     
     # Loop utama
     running = True
@@ -126,9 +128,9 @@ def main():
 
         # Gerakkan dinding ke kiri
         tembok_lantai.move_left(1, SETTINGS.box_size)
-        tembok_rintangan[0].move_left(4, (WIDTH+SETTINGS.box_size))
-        tembok_rintangan[1].move_left(6, (WIDTH+SETTINGS.box_size))
-        tembok_rintangan[2].move_left(2, (WIDTH+SETTINGS.box_size))
+        tembok_rintangan[0].move_left(4, (WIDTH+SETTINGS.box_size*3))
+        tembok_rintangan[1].move_left(6, (WIDTH+SETTINGS.box_size*3))
+        tembok_rintangan[2].move_left(2, (WIDTH+SETTINGS.box_size*3))
         # tinggi rintangana
         tinggi_rintangan = choice(list(data_rintangan.keys()))
 
