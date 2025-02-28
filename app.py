@@ -64,6 +64,10 @@ class BoxWall(Object):
         """Inisialisasi kotak dengan posisi, ukuran, dan atribut lainnya."""
         super().__init__(x=x, y=y, size=size)
 
+    def rect_wall(self) -> pygame.Rect:
+        """Mengembalikan objek pygame.Rect dari kotak pembatas."""
+        return pygame.Rect(self._ox + self.jalan, self._oy, self._osize[0], self._osize[1])
+
     def move_left(self, velocity: int, batas: int):
         """Menggerakkan kotak pembatas ke kiri dan mengulang ke kanan jika keluar dari layar."""
         self.jalan -= velocity
@@ -75,9 +79,9 @@ class BoxWall(Object):
         for i in range(0, WIDTH + SETTINGS.box_size, SETTINGS.box_size):
             pygame.draw.rect(surface, color, pygame.Rect(i + self.jalan, self._oy, self._osize[0] - split, self._osize[1]))
 
-    def draw_split(self, surface: pygame.display, color: tuple[int, int, int], split: int):
+    def draw_split(self, surface: pygame.display, color: tuple[int, int, int]):
         """Menggambar satu kotak pembatas di layar dan mengulang setelah keluar."""
-        pygame.draw.rect(surface, color, pygame.Rect(self._ox + self.jalan, self._oy, self._osize[0] - split, self._osize[1]))
+        pygame.draw.rect(surface, color, self.rect_wall())
 
     def draws(self, surface: pygame.display, color: tuple[int, int, int]):
         """Menggambar beberapa kotak di layar."""
@@ -134,21 +138,25 @@ def main():
         # tinggi rintangan
         tinggi_rintangan = choice(list(data_rintangan.keys()))
 
-        for r in tembok_rintangan:
-            if r.jalan == 0:
-                r.set_size = SETTINGS.box_size, tinggi_rintangan
-                if r.get_size == (SETTINGS.box_size, tinggi_rintangan):
-                    r.set_oy = FLOOR_Y-SETTINGS.box_size-data_rintangan[tinggi_rintangan]
+        
 
         # Gambar ulang layar
         screen.fill(COLORS.background_color)
         box.draw(surface=screen, color=COLORS.box_color)
         tembok_lantai.draws(surface=screen, color=COLORS.boxs_color)
         tembok_lantai.draws_split(surface=screen, color=COLORS.box_splits_color, split=5)
-        tembok_rintangan[0].draw_split(surface=screen, color=COLORS.box_split_color, split=5)
-        tembok_rintangan[1].draw_split(surface=screen, color=COLORS.box_split_color, split=5)
-        tembok_rintangan[2].draw_split(surface=screen, color=COLORS.box_split_color, split=5)
+        tembok_rintangan[0].draw_split(surface=screen, color=COLORS.box_split_color)
+        tembok_rintangan[1].draw_split(surface=screen, color=COLORS.box_split_color)
+        tembok_rintangan[2].draw_split(surface=screen, color=COLORS.box_split_color)
 
+        # cek tabrakan dengan box dan saat keluar dari lebar layar
+        for r in tembok_rintangan:
+            if box.rect.colliderect(r.rect_wall()):
+                running = False
+            if r.jalan == 0:
+                r.set_size = SETTINGS.box_size, tinggi_rintangan
+                if r.get_size == (SETTINGS.box_size, tinggi_rintangan):
+                    r.set_oy = FLOOR_Y-SETTINGS.box_size-data_rintangan[tinggi_rintangan]
         # atur fps
         clock.tick(SETTINGS.fps)
         pygame.display.update()
