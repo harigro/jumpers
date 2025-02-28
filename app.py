@@ -128,10 +128,10 @@ def main():
 
         # Gerakkan dinding ke kiri
         tembok_lantai.move_left(1, SETTINGS.box_size)
-        tembok_rintangan[0].move_left(4, (WIDTH+SETTINGS.box_size*3))
-        tembok_rintangan[1].move_left(6, (WIDTH+SETTINGS.box_size*3))
-        tembok_rintangan[2].move_left(2, (WIDTH+SETTINGS.box_size*3))
-        # tinggi rintangana
+        tembok_rintangan[0].move_left(choice([4, 5, 6]), (WIDTH+SETTINGS.box_size*3))
+        tembok_rintangan[1].move_left(choice([6, 7, 8]), (WIDTH+SETTINGS.box_size*3))
+        tembok_rintangan[2].move_left(choice([2, 3, 4]), (WIDTH+SETTINGS.box_size*3))
+        # tinggi rintangan
         tinggi_rintangan = choice(list(data_rintangan.keys()))
 
         for r in tembok_rintangan:
