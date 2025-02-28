@@ -2,7 +2,7 @@ from walls.wall import Object
 from walls.data_wall import DataWall
 from screen import SETTINGS, COLORS
 from typing import Union
-from random import choice
+from random import choice, sample
 import pygame
 
 # Inisialisasi Pygame
@@ -94,11 +94,11 @@ def main():
     box = Box(x=SETTINGS.box_size, y=FLOOR_Y, size=(SETTINGS.box_size, SETTINGS.box_size))
     # tembok penghalang
     data_rintangan = DataWall((100, 50)).height_axis_y(200, 10) # data tinggi dan posisi rintangan
-    acak_awal = choice(list(data_rintangan.keys()))
+    acak_awal = sample(list(data_rintangan.keys()), 3) # memastikan agar data yang diambil benar-benar tidak sama
     tembok_lantai = BoxWall(x=(WIDTH//2), y=FLOOR_Y, size=(SETTINGS.box_size, SETTINGS.box_size))
-    tembok_rintangan = (BoxWall(x=WIDTH, y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal]), size=(SETTINGS.box_size, acak_awal)),
-                        BoxWall(x=WIDTH, y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal]), size=(SETTINGS.box_size, acak_awal)),
-                        BoxWall(x=WIDTH, y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal]), size=(SETTINGS.box_size, acak_awal)))
+    tembok_rintangan = (BoxWall(x=WIDTH, y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal[0]]), size=(SETTINGS.box_size, acak_awal[0])),
+                        BoxWall(x=WIDTH, y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal[1]]), size=(SETTINGS.box_size, acak_awal[1])),
+                        BoxWall(x=WIDTH, y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal[2]]), size=(SETTINGS.box_size, acak_awal[2])))
     
     # Loop utama
     running = True
