@@ -105,6 +105,10 @@ def main():
         BoxWall(x=WIDTH+(SETTINGS.box_size*2), y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal[1]]), size=(SETTINGS.box_size, acak_awal[1])),
         BoxWall(x=WIDTH+(SETTINGS.box_size*2), y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal[2]]), size=(SETTINGS.box_size, acak_awal[2]))
     )
+
+    # skor
+    skor = SETTINGS.skor
+    fon = pygame.font.Font(None, 50)
     
     # Loop utama
     running = True
@@ -138,7 +142,15 @@ def main():
         # tinggi rintangan
         tinggi_rintangan = choice(list(data_rintangan.keys()))
 
-        
+        # cek tabrakan dengan box dan saat keluar dari lebar layar
+        for r in tembok_rintangan:
+            if box.rect.colliderect(r.rect_wall()):
+                running = False
+            if r.jalan == 0:
+                skor += 1
+                r.set_size = SETTINGS.box_size, tinggi_rintangan
+                if r.get_size == (SETTINGS.box_size, tinggi_rintangan):
+                    r.set_oy = FLOOR_Y-SETTINGS.box_size-data_rintangan[tinggi_rintangan]
 
         # Gambar ulang layar
         screen.fill(COLORS.background_color)
@@ -148,15 +160,11 @@ def main():
         tembok_rintangan[0].draw_split(surface=screen, color=COLORS.box_split_color)
         tembok_rintangan[1].draw_split(surface=screen, color=COLORS.box_split_color)
         tembok_rintangan[2].draw_split(surface=screen, color=COLORS.box_split_color)
+        teks = fon.render(f"Skor : {skor}", True, COLORS.font_color)
+        teks_rect = teks.get_rect(center=(SETTINGS.posisi_fon, SETTINGS.posisi_fon))
+        screen.blit(teks, teks_rect)
 
-        # cek tabrakan dengan box dan saat keluar dari lebar layar
-        for r in tembok_rintangan:
-            if box.rect.colliderect(r.rect_wall()):
-                running = False
-            if r.jalan == 0:
-                r.set_size = SETTINGS.box_size, tinggi_rintangan
-                if r.get_size == (SETTINGS.box_size, tinggi_rintangan):
-                    r.set_oy = FLOOR_Y-SETTINGS.box_size-data_rintangan[tinggi_rintangan]
+        
         # atur fps
         clock.tick(SETTINGS.fps)
         pygame.display.update()
