@@ -20,10 +20,8 @@ clock = pygame.time.Clock()
 
 
 class Box:
-    """Kelas untuk merepresentasikan kotak yang bisa bergerak dan melompat."""
-
     def __init__(self, x: int, y: int, size: tuple[int, int]):
-        """Inisialisasi kotak dengan posisi, ukuran, dan atribut lainnya."""
+        """Kelas untuk merepresentasikan kotak yang bisa bergerak dan melompat."""
         self.rect = pygame.Rect(x, y, size[0], size[1])
         self.velocity_y = 0
         self.on_ground = True
@@ -111,10 +109,8 @@ class Inisialisasi:
         self.skor = SETTINGS.skor
 
 def main():
-        
     inisial = Inisialisasi()
     fon = pygame.font.Font(None, 50)
-
     # berhenti
     berhenti = False
     
@@ -129,11 +125,10 @@ def main():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
-
+        keys = pygame.key.get_pressed()
         if berhenti:
-            
-            mulai = pygame.key.get_pressed()
-            if mulai[pygame.K_RETURN]:
+            # Ambil input dari keyboard
+            if keys[pygame.K_RETURN]:
                 inisial = Inisialisasi()
                 inisial.box
                 inisial.data_rintangan
@@ -141,10 +136,8 @@ def main():
                 inisial.tembok_rintangan
                 inisial.skor
                 berhenti = False
-
         else:
             # Ambil input dari keyboard
-            keys = pygame.key.get_pressed()
             if keys[pygame.K_LEFT]:
                 inisial.box.move("left", 5)
             if keys[pygame.K_RIGHT]:
