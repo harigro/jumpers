@@ -110,7 +110,7 @@ class Inisialisasi:
 
 def main():
     inisial = Inisialisasi()
-    fon = pygame.font.Font(None, 50)
+    fon = pygame.font.Font("assets/SourceSansPro-Light.otf", 50)
     # berhenti
     berhenti = False
     
