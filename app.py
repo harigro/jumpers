@@ -90,23 +90,33 @@ class BoxWall(Object):
         """Menggambar kotak di layar."""
         pygame.draw.rect(surface, color, pygame.Rect(self._ox, self._oy, self._osize[0], self._osize[1]))
 
+class Inisialisasi:
+    def __init__(self):
+        """Kelas untuk menyimpan inisialisasi"""
+        # Buat objek kotak
+        self.box = Box(x=SETTINGS.box_size, y=FLOOR_Y, size=(SETTINGS.box_size, SETTINGS.box_size))
+        # tembok penghalang
+        self.data_rintangan = DataWall((100, 50)).height_axis_y(200, 10) # data tinggi dan posisi rintangan
+        acak_awal = sample(list(self.data_rintangan.keys()), 3) # memastikan agar data yang diambil benar-benar tidak sama
+        self.tembok_lantai = BoxWall(x=(WIDTH//2), y=FLOOR_Y, size=(SETTINGS.box_size, SETTINGS.box_size))
+        self.tembok_rintangan = (
+            BoxWall(x=WIDTH+(SETTINGS.box_size*2), 
+                    y=FLOOR_Y-SETTINGS.box_size-(self.data_rintangan[acak_awal[0]]), size=(SETTINGS.box_size, acak_awal[0])),
+            BoxWall(x=WIDTH+(SETTINGS.box_size*2), 
+                    y=FLOOR_Y-SETTINGS.box_size-(self.data_rintangan[acak_awal[1]]), size=(SETTINGS.box_size, acak_awal[1])),
+            BoxWall(x=WIDTH+(SETTINGS.box_size*2), 
+                    y=FLOOR_Y-SETTINGS.box_size-(self.data_rintangan[acak_awal[2]]), size=(SETTINGS.box_size, acak_awal[2]))
+        )
+        # skor
+        self.skor = SETTINGS.skor
+
 def main():
         
-    # Buat objek kotak
-    box = Box(x=SETTINGS.box_size, y=FLOOR_Y, size=(SETTINGS.box_size, SETTINGS.box_size))
-    # tembok penghalang
-    data_rintangan = DataWall((100, 50)).height_axis_y(200, 10) # data tinggi dan posisi rintangan
-    acak_awal = sample(list(data_rintangan.keys()), 3) # memastikan agar data yang diambil benar-benar tidak sama
-    tembok_lantai = BoxWall(x=(WIDTH//2), y=FLOOR_Y, size=(SETTINGS.box_size, SETTINGS.box_size))
-    tembok_rintangan = (
-        BoxWall(x=WIDTH+(SETTINGS.box_size*2), y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal[0]]), size=(SETTINGS.box_size, acak_awal[0])),
-        BoxWall(x=WIDTH+(SETTINGS.box_size*2), y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal[1]]), size=(SETTINGS.box_size, acak_awal[1])),
-        BoxWall(x=WIDTH+(SETTINGS.box_size*2), y=FLOOR_Y-SETTINGS.box_size-(data_rintangan[acak_awal[2]]), size=(SETTINGS.box_size, acak_awal[2]))
-    )
-
-    # skor
-    skor = SETTINGS.skor
+    inisial = Inisialisasi()
     fon = pygame.font.Font(None, 50)
+
+    # berhenti
+    berhenti = False
     
     # Loop utama
     running = True
@@ -120,45 +130,58 @@ def main():
                 if event.key == pygame.K_ESCAPE:
                     running = False
 
-        # Ambil input dari keyboard
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            box.move("left", 5)
-        if keys[pygame.K_RIGHT]:
-            box.move("right", 5)
-        if keys[pygame.K_SPACE]:  # Panggil metode jump() jika tombol spasi ditekan
-            box.jump(15)
+        if berhenti:
+            
+            mulai = pygame.key.get_pressed()
+            if mulai[pygame.K_RETURN]:
+                inisial = Inisialisasi()
+                inisial.box
+                inisial.data_rintangan
+                inisial.tembok_lantai
+                inisial.tembok_rintangan
+                inisial.skor
+                berhenti = False
 
-        # Terapkan gravitasi
-        box.apply_gravity(0.5)
+        else:
+            # Ambil input dari keyboard
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_LEFT]:
+                inisial.box.move("left", 5)
+            if keys[pygame.K_RIGHT]:
+                inisial.box.move("right", 5)
+            if keys[pygame.K_SPACE]:  # Panggil metode jump() jika tombol spasi ditekan
+                inisial.box.jump(15)
 
-        # Gerakkan dinding ke kiri
-        tembok_lantai.move_left(1, SETTINGS.box_size)
-        tembok_rintangan[0].move_left(choice([4, 5, 6]), (WIDTH+SETTINGS.box_size*3))
-        tembok_rintangan[1].move_left(choice([6, 7, 8]), (WIDTH+SETTINGS.box_size*3))
-        tembok_rintangan[2].move_left(choice([2, 3, 4]), (WIDTH+SETTINGS.box_size*3))
-        # tinggi rintangan
-        tinggi_rintangan = choice(list(data_rintangan.keys()))
+            # Terapkan gravitasi
+            inisial.box.apply_gravity(0.5)
 
-        # cek tabrakan dengan box dan saat keluar dari lebar layar
-        for r in tembok_rintangan:
-            if box.rect.colliderect(r.rect_wall()):
-                running = False
-            if r.jalan == 0:
-                skor += 1
-                r.set_size = SETTINGS.box_size, tinggi_rintangan
-                if r.get_size == (SETTINGS.box_size, tinggi_rintangan):
-                    r.set_oy = FLOOR_Y-SETTINGS.box_size-data_rintangan[tinggi_rintangan]
+            # Gerakkan dinding ke kiri
+            inisial.tembok_lantai.move_left(1, SETTINGS.box_size)
+            inisial.tembok_rintangan[0].move_left(choice([4, 5, 6]), (WIDTH+SETTINGS.box_size*3))
+            inisial.tembok_rintangan[1].move_left(choice([6, 7, 8]), (WIDTH+SETTINGS.box_size*3))
+            inisial.tembok_rintangan[2].move_left(choice([2, 3, 4]), (WIDTH+SETTINGS.box_size*3))
+            # tinggi rintangan
+            tinggi_rintangan = choice(list(inisial.data_rintangan.keys()))
+
+            # cek tabrakan dengan box dan saat keluar dari lebar layar
+            for r in inisial.tembok_rintangan:
+                if inisial.box.rect.colliderect(r.rect_wall()):
+                    berhenti = True
+                if r.jalan == 0:
+                    inisial.skor += 1
+                    r.set_size = SETTINGS.box_size, tinggi_rintangan
+                    if r.get_size == (SETTINGS.box_size, tinggi_rintangan):
+                        r.set_oy = FLOOR_Y-SETTINGS.box_size-inisial.data_rintangan[tinggi_rintangan]
 
         # Gambar ulang layar
         screen.fill(COLORS.background_color)
-        box.draw(surface=screen, color=COLORS.box_color)
-        tembok_lantai.draws(surface=screen, color=COLORS.boxs_color)
-        tembok_lantai.draws_split(surface=screen, color=COLORS.box_splits_color, split=5)
-        tembok_rintangan[0].draw_split(surface=screen, color=COLORS.box_split_color)
-        tembok_rintangan[1].draw_split(surface=screen, color=COLORS.box_split_color)
-        tembok_rintangan[2].draw_split(surface=screen, color=COLORS.box_split_color)
-        teks = fon.render(f"Skor : {skor}", True, COLORS.font_color)
+        inisial.box.draw(surface=screen, color=COLORS.box_color)
+        inisial.tembok_lantai.draws(surface=screen, color=COLORS.boxs_color)
+        inisial.tembok_lantai.draws_split(surface=screen, color=COLORS.box_splits_color, split=5)
+        inisial.tembok_rintangan[0].draw_split(surface=screen, color=COLORS.box_split_color)
+        inisial.tembok_rintangan[1].draw_split(surface=screen, color=COLORS.box_split_color)
+        inisial.tembok_rintangan[2].draw_split(surface=screen, color=COLORS.box_split_color)
+        teks = fon.render(f"Skor : {inisial.skor}", True, COLORS.font_color)
         teks_rect = teks.get_rect(center=(SETTINGS.posisi_fon, SETTINGS.posisi_fon))
         screen.blit(teks, teks_rect)
 
