@@ -57,12 +57,10 @@ class Box:
         pygame.draw.rect(surface, color, self.rect)
 
 class BoxWall(Object):
-
-    jalan = 0
-    
     def __init__(self, x: int, y: int, size: tuple[int, int]):
         """Inisialisasi kotak dengan posisi, ukuran, dan atribut lainnya."""
         super().__init__(x=x, y=y, size=size)
+        self.jalan = 0
 
     def rect_wall(self) -> pygame.Rect:
         """Mengembalikan objek pygame.Rect dari kotak pembatas."""
