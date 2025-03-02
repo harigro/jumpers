@@ -185,7 +185,6 @@ def main():
         teks_rect = teks.get_rect(center=(SETTINGS.posisi_fon, SETTINGS.posisi_fon))
         screen.blit(teks, teks_rect)
 
-        
         # atur fps
         clock.tick(SETTINGS.fps)
         pygame.display.update()
